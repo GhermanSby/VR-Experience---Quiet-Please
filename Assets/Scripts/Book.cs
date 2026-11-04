@@ -15,6 +15,11 @@ public class Book : MonoBehaviour
     [SerializeField] private Renderer bookRenderer;
     [SerializeField] private Color heldColor = Color.white;
 
+    [Header("Color Palette (Adjust Hues for your Material)")]
+    [SerializeField] private Color greenPreset = new Color(0.22f, 0.65f, 0.32f); // Classic bookcloth green
+    [SerializeField] private Color bluePreset = new Color(0.18f, 0.42f, 0.82f); // Royal bookcloth blue
+    [SerializeField] private Color redPreset = new Color(0.82f, 0.20f, 0.20f); // Crimson red
+
     [Header("Behaviour (later driven by VSProfile)")]
     [Tooltip("VS1: briefly flicker the real colour after grabbing.")]
     public bool flickerOnGrab = false;
@@ -28,8 +33,8 @@ public class Book : MonoBehaviour
     public bool IsHeld => isHeld;
     public bool IsShelved => isShelved;
 
-    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
-    private static readonly int ColorId = Shader.PropertyToID("_Color");
+    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor"); // URP / Lit
+    private static readonly int ColorId = Shader.PropertyToID("_Color");         // Standard / Built-in
     private MaterialPropertyBlock block;
     private Rigidbody body;
     private Coroutine flickerRoutine;
@@ -42,13 +47,29 @@ public class Book : MonoBehaviour
     public System.Action<Book> Released;
     public System.Action<Book> Shelved;
 
+    // ---- Live Editor Updates (Instant visual preview) -------------------
+
+    private void OnValidate()
+    {
+        // Automatically find renderer if not assigned
+        if (bookRenderer == null) bookRenderer = GetComponentInChildren<Renderer>();
+        if (block == null) block = new MaterialPropertyBlock();
+
+        // Updates the color in the Scene View instantly when changed in Inspector
+        if (!Application.isPlaying || (!isHeld && onTable))
+        {
+            ApplyColor(RealColor);
+        }
+    }
+
     private void Awake()
     {
         body = GetComponent<Rigidbody>();
         grabbable = GetComponent<Grabbable>();
 
         if (bookRenderer == null) bookRenderer = GetComponentInChildren<Renderer>();
-        block = new MaterialPropertyBlock();
+        if (block == null) block = new MaterialPropertyBlock();
+
         ApplyColor(RealColor);
     }
 
@@ -86,9 +107,9 @@ public class Book : MonoBehaviour
         {
             switch (bookColor)
             {
-                case BookColor.Green: return new Color(0.55f, 0.76f, 0.29f);
-                case BookColor.Blue: return new Color(0.20f, 0.33f, 0.85f);
-                default: return new Color(0.78f, 0.19f, 0.15f);
+                case BookColor.Green: return greenPreset;
+                case BookColor.Blue: return bluePreset;
+                default: return redPreset;
             }
         }
     }
@@ -96,6 +117,8 @@ public class Book : MonoBehaviour
     private void ApplyColor(Color c)
     {
         if (bookRenderer == null) return;
+        if (block == null) block = new MaterialPropertyBlock();
+
         bookRenderer.GetPropertyBlock(block);
         block.SetColor(BaseColorId, c);
         block.SetColor(ColorId, c);
