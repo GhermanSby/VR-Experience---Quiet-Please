@@ -182,8 +182,8 @@ public class Book : MonoBehaviour
 
     public void RejectFromShelf(Vector3 pushDirection, float force = 1.5f)
     {
-        if (isShelved) return;
-        body.AddForce(pushDirection.normalized * force, ForceMode.VelocityChange);
+        //if (isShelved) return;
+        //body.AddForce(pushDirection.normalized * force, ForceMode.VelocityChange);
     }
 
     // ---- Table detection ------------------------------------------------

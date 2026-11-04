@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 [RequireComponent(typeof(Collider))]
 public class Shelf : MonoBehaviour
@@ -30,6 +32,14 @@ public class Shelf : MonoBehaviour
     [SerializeField] private Vector3 rejectDirection = Vector3.back;
     [SerializeField] private float rejectForce = 1.8f;
 
+    [Range(0f, 1f)][SerializeField] private float hapticAmplitude = 0.8f;
+    [Range(0f, 1f)][SerializeField] private float hapticFrequency = 0.8f;
+    [SerializeField] private float hapticDuration = 0.25f;
+
+    [Header("Audio (Optional)")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip rejectSound;
+
     [Header("VS2 Hooks (Phase 2 Prep)")]
     [SerializeField] private Renderer shelfRenderer;
     [SerializeField] private Material defaultMaterial;
@@ -37,6 +47,7 @@ public class Shelf : MonoBehaviour
 
     private readonly List<Transform> generatedSlots = new List<Transform>();
     private readonly List<Book> placedBooks = new List<Book>();
+    private float lastRejectTime;
 
     public bool IsFull => placedBooks.Count >= slotCount;
 
@@ -90,7 +101,12 @@ public class Shelf : MonoBehaviour
             }
             else
             {
-                RejectBook(book);
+                // Only buzz once per entry/attempt (0.4s cooldown)
+                if (Time.time - lastRejectTime > 0.4f)
+                {
+                    lastRejectTime = Time.time;
+                    RejectBook(book);
+                }
             }
         }
     }
@@ -108,10 +124,32 @@ public class Shelf : MonoBehaviour
 
     private void RejectBook(Book book)
     {
-        Vector3 pushDir = transform.TransformDirection(rejectDirection.normalized);
-        book.RejectFromShelf(pushDir, rejectForce);
+        // 1. Trigger controller vibration (book stays in your hand)
+        StartCoroutine(TriggerHapticFeedback());
+
+        // 2. Play error sound (if assigned)
+        if (audioSource != null && rejectSound != null)
+        {
+            audioSource.PlayOneShot(rejectSound);
+        }
+
+        // 3. Log to task manager
         TaskManager.Instance?.NotifyBookRejected(book, this);
     }
+
+    private IEnumerator TriggerHapticFeedback()
+    {
+        // Vibrate both Touch controllers (or whichever is active)
+        OVRInput.SetControllerVibration(hapticFrequency, hapticAmplitude, OVRInput.Controller.RTouch);
+        OVRInput.SetControllerVibration(hapticFrequency, hapticAmplitude, OVRInput.Controller.LTouch);
+
+        yield return new WaitForSeconds(hapticDuration);
+
+        // Turn off vibration
+        OVRInput.SetControllerVibration(0f, 0f, OVRInput.Controller.RTouch);
+        OVRInput.SetControllerVibration(0f, 0f, OVRInput.Controller.LTouch);
+    }
+
 
     // ---- Phase 2 Hooks (Shelf Highlight for VS2) ----
     public void SetHighlight(bool active)
