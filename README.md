@@ -11,7 +11,7 @@ Room layout
 
 Sound system VS1&2
 
-Changing of VSs (button ‘A’?)
+Changing of VSs -> Menu and just switch between them and Load the Environment with different properties/paramaters.
 
 Pop ups - showing up randomly, closing function
 
