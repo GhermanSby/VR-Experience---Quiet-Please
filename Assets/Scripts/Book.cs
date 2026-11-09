@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using Oculus.Interaction;
+using System.Collections.Generic;
 
 public enum BookColor { Green, Blue, Red }
 
@@ -25,6 +26,16 @@ public class Book : MonoBehaviour
     public bool flickerOnGrab = false;
     public float flickerDuration = 0.6f;
     public float flickerInterval = 0.08f;
+
+    [Header("Extra Glitch Colors (Other colors appearing in flicker)")]
+    [SerializeField]
+    private Color[] extraGlitchColors = new Color[]
+    {
+        new Color(0.95f, 0.80f, 0.20f), 
+        new Color(0.70f, 0.25f, 0.85f), 
+        new Color(0.95f, 0.45f, 0.15f),
+        new Color(0.20f, 0.80f, 0.80f)  
+    };
 
     [Header("State (read-only)")]
     [SerializeField] private bool isHeld;
@@ -125,6 +136,24 @@ public class Book : MonoBehaviour
         bookRenderer.SetPropertyBlock(block);
     }
 
+    private List<Color> GetFullFlickerPalette()
+    {
+        List<Color> palette = new List<Color>
+        {
+            greenPreset,
+            bluePreset,
+            redPreset,
+            heldColor
+        };
+
+        if (extraGlitchColors != null && extraGlitchColors.Length > 0)
+        {
+            palette.AddRange(extraGlitchColors);
+        }
+
+        return palette;
+    }
+
     // ---- Grab events ----------------------------------------------------
 
     public void OnGrabbed()
@@ -136,7 +165,7 @@ public class Book : MonoBehaviour
         StopFlicker();
 
         if (flickerOnGrab)
-            flickerRoutine = StartCoroutine(FlickerThenWhite());
+            flickerRoutine = StartCoroutine(FlickerThroughAllColors());
         else
             ApplyColor(heldColor);
 
@@ -180,11 +209,6 @@ public class Book : MonoBehaviour
         Shelved?.Invoke(this);
     }
 
-    public void RejectFromShelf(Vector3 pushDirection, float force = 1.5f)
-    {
-        //if (isShelved) return;
-        //body.AddForce(pushDirection.normalized * force, ForceMode.VelocityChange);
-    }
 
     // ---- Table detection ------------------------------------------------
 
@@ -204,17 +228,32 @@ public class Book : MonoBehaviour
 
     // ---- Flicker (low-level behaviour) ------------------------------------
 
-    private IEnumerator FlickerThenWhite()
+    private IEnumerator FlickerThroughAllColors()
     {
         float t = 0f;
-        bool showReal = true;
+        List<Color> palette = GetFullFlickerPalette();
+        Color lastColor = RealColor;
+
         while (t < flickerDuration)
         {
-            ApplyColor(showReal ? RealColor : heldColor);
-            showReal = !showReal;
+            // Losujemy kolor z palety tak, aby nie powtórzyæ tego samego pod rz¹d
+            Color nextColor;
+            int attempts = 0;
+            do
+            {
+                nextColor = palette[Random.Range(0, palette.Count)];
+                attempts++;
+            }
+            while (nextColor == lastColor && attempts < 10);
+
+            lastColor = nextColor;
+            ApplyColor(nextColor);
+
             yield return new WaitForSeconds(flickerInterval);
             t += flickerInterval;
         }
+
+        // Koñczymy na docelowym kolorze (np. bia³ym)
         ApplyColor(heldColor);
         flickerRoutine = null;
     }
