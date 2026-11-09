@@ -89,6 +89,8 @@ public class TaskManager : MonoBehaviour
         {
             CompleteTask();
         }
+
+        PopupManager.Instance.SpawnInFrontOfPlayer("Warning", "Task interrupted! Close this to continue.");
     }
 
     public void NotifyBookRejected(Book book, Shelf shelf)
