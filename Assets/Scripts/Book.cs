@@ -266,4 +266,8 @@ public class Book : MonoBehaviour
             flickerRoutine = null;
         }
     }
+
+    internal void ResetToStart()
+    {
+    }
 }
