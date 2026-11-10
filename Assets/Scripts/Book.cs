@@ -1,57 +1,269 @@
-// Book.cs  -  put on every colour-coded book (together with Meta's grab components).
-// Wire Meta's grab events to OnGrabbed() / OnReleased():
-//   add "Interactable Unity Event Wrapper" to the book, drag the book's Grab Interactable into it,
-//   then add OnGrabbed to "When Select" and OnReleased to "When Unselect".
-
+using System.Collections;
 using UnityEngine;
+using Oculus.Interaction;
+using System.Collections.Generic;
 
-namespace QuietPlease
+public enum BookColor { Green, Blue, Red }
+
+[RequireComponent(typeof(Rigidbody))]
+public class Book : MonoBehaviour
 {
-    public enum BookColor { Green, Blue, Red }
+    [Header("Identity")]
+    public BookColor bookColor = BookColor.Green;
 
-    [RequireComponent(typeof(Rigidbody))]
-    public class Book : MonoBehaviour
+    [Header("Rendering")]
+    [Tooltip("Renderer whose material shows the colour. Auto-found if left empty.")]
+    [SerializeField] private Renderer bookRenderer;
+    [SerializeField] private Color heldColor = Color.white;
+
+    [Header("Color Palette (Adjust Hues for your Material)")]
+    [SerializeField] private Color greenPreset = new Color(0.22f, 0.65f, 0.32f); // Classic bookcloth green
+    [SerializeField] private Color bluePreset = new Color(0.18f, 0.42f, 0.82f); // Royal bookcloth blue
+    [SerializeField] private Color redPreset = new Color(0.82f, 0.20f, 0.20f); // Crimson red
+
+    [Header("Behaviour (later driven by VSProfile)")]
+    [Tooltip("VS1: briefly flicker the real colour after grabbing.")]
+    public bool flickerOnGrab = false;
+    public float flickerDuration = 0.6f;
+    public float flickerInterval = 0.08f;
+
+    [Header("Extra Glitch Colors (Other colors appearing in flicker)")]
+    [SerializeField]
+    private Color[] extraGlitchColors = new Color[]
     {
-        public BookColor color;
-        public bool IsHeld { get; private set; }
-        public bool IsShelved { get; private set; }
+        new Color(0.95f, 0.80f, 0.20f), 
+        new Color(0.70f, 0.25f, 0.85f), 
+        new Color(0.95f, 0.45f, 0.15f),
+        new Color(0.20f, 0.80f, 0.80f)  
+    };
 
-        Vector3 startPos; Quaternion startRot; Rigidbody rb;
+    [Header("State (read-only)")]
+    [SerializeField] private bool isHeld;
+    [SerializeField] private bool isShelved;
 
-        void Awake()
+    public bool IsHeld => isHeld;
+    public bool IsShelved => isShelved;
+
+    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor"); // URP / Lit
+    private static readonly int ColorId = Shader.PropertyToID("_Color");         // Standard / Built-in
+    private MaterialPropertyBlock block;
+    private Rigidbody body;
+    private Coroutine flickerRoutine;
+    private bool onTable = true;
+
+    // Meta Grabbable reference
+    private Grabbable grabbable;
+
+    public System.Action<Book> Grabbed;
+    public System.Action<Book> Released;
+    public System.Action<Book> Shelved;
+
+    // ---- Live Editor Updates (Instant visual preview) -------------------
+
+    private void OnValidate()
+    {
+        // Automatically find renderer if not assigned
+        if (bookRenderer == null) bookRenderer = GetComponentInChildren<Renderer>();
+        if (block == null) block = new MaterialPropertyBlock();
+
+        // Updates the color in the Scene View instantly when changed in Inspector
+        if (!Application.isPlaying || (!isHeld && onTable))
         {
-            rb = GetComponent<Rigidbody>();
-            startPos = transform.position; startRot = transform.rotation;
+            ApplyColor(RealColor);
+        }
+    }
+
+    private void Awake()
+    {
+        body = GetComponent<Rigidbody>();
+        grabbable = GetComponent<Grabbable>();
+
+        if (bookRenderer == null) bookRenderer = GetComponentInChildren<Renderer>();
+        if (block == null) block = new MaterialPropertyBlock();
+
+        ApplyColor(RealColor);
+    }
+
+    private void OnEnable()
+    {
+        if (grabbable != null)
+            grabbable.WhenPointerEventRaised += HandlePointerEvent;
+    }
+
+    private void OnDisable()
+    {
+        if (grabbable != null)
+            grabbable.WhenPointerEventRaised -= HandlePointerEvent;
+    }
+
+    private void HandlePointerEvent(PointerEvent evt)
+    {
+        switch (evt.Type)
+        {
+            case PointerEventType.Select:
+                OnGrabbed();
+                break;
+            case PointerEventType.Unselect:
+            case PointerEventType.Cancel:
+                OnReleased();
+                break;
+        }
+    }
+
+    // ---- Colour helpers -------------------------------------------------
+
+    public Color RealColor
+    {
+        get
+        {
+            switch (bookColor)
+            {
+                case BookColor.Green: return greenPreset;
+                case BookColor.Blue: return bluePreset;
+                default: return redPreset;
+            }
+        }
+    }
+
+    private void ApplyColor(Color c)
+    {
+        if (bookRenderer == null) return;
+        if (block == null) block = new MaterialPropertyBlock();
+
+        bookRenderer.GetPropertyBlock(block);
+        block.SetColor(BaseColorId, c);
+        block.SetColor(ColorId, c);
+        bookRenderer.SetPropertyBlock(block);
+    }
+
+    private List<Color> GetFullFlickerPalette()
+    {
+        List<Color> palette = new List<Color>
+        {
+            greenPreset,
+            bluePreset,
+            redPreset,
+            heldColor
+        };
+
+        if (extraGlitchColors != null && extraGlitchColors.Length > 0)
+        {
+            palette.AddRange(extraGlitchColors);
         }
 
-        void Start() => GameManager.Instance?.Register(this);
+        return palette;
+    }
 
-        public void OnGrabbed()
+    // ---- Grab events ----------------------------------------------------
+
+    public void OnGrabbed()
+    {
+        if (isShelved) return;
+
+        isHeld = true;
+        onTable = false;
+        StopFlicker();
+
+        if (flickerOnGrab)
+            flickerRoutine = StartCoroutine(FlickerThroughAllColors());
+        else
+            ApplyColor(heldColor);
+
+        Grabbed?.Invoke(this);
+    }
+
+    public void OnReleased()
+    {
+        isHeld = false;
+        StopFlicker();
+
+        ApplyColor(onTable ? RealColor : heldColor);
+
+        Released?.Invoke(this);
+    }
+
+    // ---- Called by shelves ----------------------------------------------
+
+    public void PlaceOnShelf(Transform snapPoint)
+    {
+        isShelved = true;
+        isHeld = false;
+        StopFlicker();
+
+        if (grabbable != null) grabbable.enabled = false;
+
+        body.isKinematic = true;
+#if UNITY_6000_0_OR_NEWER
+        body.linearVelocity = Vector3.zero;
+#else
+        body.velocity = Vector3.zero;
+#endif
+        body.angularVelocity = Vector3.zero;
+
+        if (snapPoint != null)
         {
-            if (IsShelved) return;
-            IsHeld = true;
-            GameManager.Instance?.NotifyBookPickedUp(this);
+            transform.SetPositionAndRotation(snapPoint.position, snapPoint.rotation);
         }
 
-        public void OnReleased()
+        ApplyColor(RealColor);
+        Shelved?.Invoke(this);
+    }
+
+
+    // ---- Table detection ------------------------------------------------
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Table"))
         {
-            IsHeld = false;
-            GameManager.Instance?.NotifyBookReleased(this);
+            onTable = true;
+            if (!isHeld && !isShelved) ApplyColor(RealColor);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Table")) onTable = false;
+    }
+
+    // ---- Flicker (low-level behaviour) ------------------------------------
+
+    private IEnumerator FlickerThroughAllColors()
+    {
+        float t = 0f;
+        List<Color> palette = GetFullFlickerPalette();
+        Color lastColor = RealColor;
+
+        while (t < flickerDuration)
+        {
+            // Losujemy kolor z palety tak, aby nie powtórzyæ tego samego pod rz¹d
+            Color nextColor;
+            int attempts = 0;
+            do
+            {
+                nextColor = palette[Random.Range(0, palette.Count)];
+                attempts++;
+            }
+            while (nextColor == lastColor && attempts < 10);
+
+            lastColor = nextColor;
+            ApplyColor(nextColor);
+
+            yield return new WaitForSeconds(flickerInterval);
+            t += flickerInterval;
         }
 
-        // Called by Shelf when the book is dropped into the matching shelf zone
-        public void MarkShelved()
-        {
-            if (IsShelved) return;
-            IsShelved = true;
-            GameManager.Instance?.NotifyBookShelved(this);
-        }
+        // Koñczymy na docelowym kolorze (np. bia³ym)
+        ApplyColor(heldColor);
+        flickerRoutine = null;
+    }
 
-        public void ResetToStart()
+    private void StopFlicker()
+    {
+        if (flickerRoutine != null)
         {
-            IsHeld = false; IsShelved = false;
-            rb.linearVelocity = Vector3.zero; rb.angularVelocity = Vector3.zero;
-            transform.SetPositionAndRotation(startPos, startRot);
+            StopCoroutine(flickerRoutine);
+            flickerRoutine = null;
         }
     }
 }
