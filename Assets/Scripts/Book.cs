@@ -236,7 +236,7 @@ public class Book : MonoBehaviour
 
         while (t < flickerDuration)
         {
-            // Losujemy kolor z palety tak, aby nie powtórzyæ tego samego pod rz¹d
+            // Losujemy kolor z palety tak, aby nie powtÃ³rzyÃ¦ tego samego pod rzÂ¹d
             Color nextColor;
             int attempts = 0;
             do
@@ -253,7 +253,7 @@ public class Book : MonoBehaviour
             t += flickerInterval;
         }
 
-        // Koñczymy na docelowym kolorze (np. bia³ym)
+        // KoÃ±czymy na docelowym kolorze (np. biaÂ³ym)
         ApplyColor(heldColor);
         flickerRoutine = null;
     }
