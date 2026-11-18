@@ -25,6 +25,8 @@ Flickering of book color (done as bool to activate for each book - could be cont
 Flickering of shelf color
 
 Fidget objects - ability to pick up (middle trigger), ability to play VS1 (index trigger)
+clock:
+activeWindow on the tracker (2 s is forgiving, lower it if people can fidget rarely and still keep the clock stable) and catchUpRate (higher means a faster snap back to the real time).
 
 Idea:
 Books have color when they are on the table, when we grab them - they turn white - so you kinda have to remember the color and in VS1 when you get distracted it’s harder “to remember” where you wanted to put it
