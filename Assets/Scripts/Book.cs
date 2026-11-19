@@ -21,8 +21,10 @@ public class Book : MonoBehaviour
     [SerializeField] private Color bluePreset = new Color(0.18f, 0.42f, 0.82f); // Royal bookcloth blue
     [SerializeField] private Color redPreset = new Color(0.82f, 0.20f, 0.20f); // Crimson red
 
-    [Header("Behaviour (later driven by VSProfile)")]
-    [Tooltip("VS1: briefly flicker the real colour after grabbing.")]
+    [Header("Behaviour (set by TaskManager's VS1 / VS2 mode at the start of a run)")]
+    [Tooltip("VS2: the book keeps its real colour while held. Off (VS1): it turns white, so you have to remember the colour.")]
+    public bool keepColorWhenHeld = false;
+    [Tooltip("VS1: flicker through colours right after grabbing, before turning white.")]
     public bool flickerOnGrab = false;
     public float flickerDuration = 0.6f;
     public float flickerInterval = 0.08f;
@@ -51,6 +53,11 @@ public class Book : MonoBehaviour
     private Coroutine flickerRoutine;
     private bool onTable = true;
 
+    // Where the book was when the scene started, so a new run can put it back
+    private Vector3 startPosition;
+    private Quaternion startRotation;
+    private bool startKinematic;
+
     // Meta Grabbable reference
     private Grabbable grabbable;
 
@@ -77,6 +84,10 @@ public class Book : MonoBehaviour
     {
         body = GetComponent<Rigidbody>();
         grabbable = GetComponent<Grabbable>();
+
+        startPosition = transform.position;
+        startRotation = transform.rotation;
+        startKinematic = body.isKinematic;
 
         if (bookRenderer == null) bookRenderer = GetComponentInChildren<Renderer>();
         if (block == null) block = new MaterialPropertyBlock();
@@ -164,7 +175,9 @@ public class Book : MonoBehaviour
         onTable = false;
         StopFlicker();
 
-        if (flickerOnGrab)
+        if (keepColorWhenHeld)
+            ApplyColor(RealColor);
+        else if (flickerOnGrab)
             flickerRoutine = StartCoroutine(FlickerThroughAllColors());
         else
             ApplyColor(heldColor);
@@ -177,7 +190,7 @@ public class Book : MonoBehaviour
         isHeld = false;
         StopFlicker();
 
-        ApplyColor(onTable ? RealColor : heldColor);
+        ApplyColor(onTable || keepColorWhenHeld ? RealColor : heldColor);
 
         Released?.Invoke(this);
     }
@@ -267,7 +280,29 @@ public class Book : MonoBehaviour
         }
     }
 
-    internal void ResetToStart()
+    // ---- Called by TaskManager at the start of every run -----------------
+
+    public void ResetToStart()
     {
+        StopFlicker();
+        isHeld = false;
+        isShelved = false;
+        onTable = true;
+
+        if (grabbable != null) grabbable.enabled = true;
+
+        body.isKinematic = startKinematic;
+        transform.SetPositionAndRotation(startPosition, startRotation);
+        if (!body.isKinematic)
+        {
+#if UNITY_6000_0_OR_NEWER
+            body.linearVelocity = Vector3.zero;
+#else
+            body.velocity = Vector3.zero;
+#endif
+            body.angularVelocity = Vector3.zero;
+        }
+
+        ApplyColor(RealColor);
     }
 }

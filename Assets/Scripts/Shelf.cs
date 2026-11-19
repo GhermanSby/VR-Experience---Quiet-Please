@@ -32,6 +32,11 @@ public class Shelf : MonoBehaviour
     [SerializeField] private AudioSource audioSource;
     [SerializeField] private AudioClip rejectSound;
 
+    [Header("Highlight (VS2: lights up while a matching book is held)")]
+    [Tooltip("Renderer that gets tinted. Auto-found on this object or its children if left empty.")]
+    [SerializeField] private Renderer highlightRenderer;
+    [SerializeField] private Color highlightColor = new Color(1f, 0.85f, 0.3f);
+
     [Header("State (Auto-Managed)")]
     [SerializeField] private int slotCount = 0;
 
@@ -44,12 +49,45 @@ public class Shelf : MonoBehaviour
     private readonly List<Book> placedBooks = new List<Book>();
     private float lastRejectTime;
 
+    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor"); // URP / Lit
+    private static readonly int ColorId = Shader.PropertyToID("_Color");         // Standard / Built-in
+    private MaterialPropertyBlock highlightBlock;
+
     public bool IsFull => placedBooks.Count >= slotCount;
 
     private void Awake()
     {
         GetComponent<Collider>().isTrigger = true;
         if (centerPoint == null) centerPoint = transform;
+        if (highlightRenderer == null) highlightRenderer = GetComponentInChildren<Renderer>();
+    }
+
+    /// <summary>
+    /// Empties the shelf for a new run. The books themselves are moved back by Book.ResetToStart().
+    /// </summary>
+    public void ClearBooks()
+    {
+        placedBooks.Clear();
+        SetHighlight(false);
+    }
+
+    /// <summary>
+    /// Tints the shelf (on) or gives it back its normal material colour (off).
+    /// </summary>
+    public void SetHighlight(bool on)
+    {
+        if (highlightRenderer == null) return;
+
+        if (!on)
+        {
+            highlightRenderer.SetPropertyBlock(null);
+            return;
+        }
+
+        if (highlightBlock == null) highlightBlock = new MaterialPropertyBlock();
+        highlightBlock.SetColor(BaseColorId, highlightColor);
+        highlightBlock.SetColor(ColorId, highlightColor);
+        highlightRenderer.SetPropertyBlock(highlightBlock);
     }
 
     public void InitializeSlots(int count)
