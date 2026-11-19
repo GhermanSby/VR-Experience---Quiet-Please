@@ -30,14 +30,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7068363555474105617}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.665, y: 1.008, z: -0.517}
-  m_LocalScale: {x: 0.15, y: 0.02, z: 0.2}
+  m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 632308682336379388}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 90, z: 90}
 --- !u!33 &530179552598990825
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -45,7 +45,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7068363555474105617}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -2284939684004217356, guid: c7d202d8d2233804ab8823e721ba4ecd, type: 3}
 --- !u!23 &92623113236904579
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -71,7 +71,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2962c052121bb384ebd68162446c1b86, type: 2}
+  - {fileID: 2100000, guid: 821316d92fc12fe4d9d7387a78f37f89, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -114,8 +114,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.051627062, y: 0.20227242, z: 0.19192104}
+  m_Center: {x: 0.0014959155, y: 0.09114012, z: -0.0024251416}
 --- !u!54 &5730193771475626609
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -179,13 +179,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Book
   bookColor: 2
-  bookRenderer: {fileID: 0}
+  bookRenderer: {fileID: 92623113236904579}
   heldColor: {r: 1, g: 1, b: 1, a: 1}
-  flickerOnGrab: 0
+  greenPreset: {r: 0.22, g: 0.65, b: 0.32, a: 1}
+  bluePreset: {r: 0.18, g: 0.42, b: 0.82, a: 1}
+  redPreset: {r: 0.82, g: 0.2, b: 0.2, a: 1}
+  flickerOnGrab: 1
   flickerDuration: 0.6
   flickerInterval: 0.08
+  extraGlitchColors: []
   isHeld: 0
   isShelved: 0
+  heldMaterial: {fileID: 2100000, guid: ecf2345b8d889a14b9052b5e58713a9c, type: 2}
 --- !u!1 &7834728554127330795
 GameObject:
   m_ObjectHideFlags: 0
@@ -233,7 +238,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Meta.XR.BuildingBlocks::Meta.XR.BuildingBlocks.BuildingBlock
   blockId: f8766c17-aaf8-4b55-9431-de8deea83842
-  instanceId: 51cab706-d016-4528-b1a5-156c648d28f6
+  instanceId: 266334fd-3511-443e-908a-a4ce10821ef9
   version: 1
   installationRoutineCheckpoint:
     _installationRoutineId: f8338144-8280-4ff6-9455-ae2bb9c20fe8

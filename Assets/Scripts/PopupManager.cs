@@ -22,10 +22,20 @@ public class PopupManager : MonoBehaviour
     [Tooltip("Layers that block the popup (Walls, Furniture, Shelves). Do not include Triggers.")]
     [SerializeField] private LayerMask obstacleLayers = ~0; // Default: Everything
 
+
+    [Header("Popup Limits")]
+    [SerializeField] private int maxOpenPopups = 3;
+    [Tooltip("Seconds to wait after a popup is closed before the next one can appear")]
+    [SerializeField] private float cooldownAfterClose = 0f;
+
+    private float nextAllowedTime = 0f;
+
     private readonly List<PopupCard> activePopups = new List<PopupCard>();
 
     public bool HasActivePopups => activePopups.Count > 0;
     public int ActiveCount => activePopups.Count;
+
+    public bool CanSpawn => activePopups.Count < maxOpenPopups && Time.time >= nextAllowedTime;
 
     private void Awake()
     {
@@ -47,6 +57,8 @@ public class PopupManager : MonoBehaviour
     /// </summary>
     public PopupCard SpawnAt(Vector3 position, Quaternion rotation, string title, string message, System.Action onClosed = null)
     {
+        if (!CanSpawn) return null;
+
         if (popupPrefab == null)
         {
             Debug.LogError("[PopupManager] Popup Prefab is not assigned!");
@@ -66,6 +78,8 @@ public class PopupManager : MonoBehaviour
     /// </summary>
     public PopupCard SpawnInFrontOfPlayer(string title, string message, System.Action onClosed = null)
     {
+        if (!CanSpawn) return null;
+
         if (playerHead == null && Camera.main != null)
         {
             playerHead = Camera.main.transform;
@@ -102,9 +116,10 @@ public class PopupManager : MonoBehaviour
 
     public void UnregisterPopup(PopupCard card)
     {
-        if (activePopups.Contains(card))
+        if (activePopups.Remove(card))
         {
-            activePopups.Remove(card);
+            nextAllowedTime = Time.time + cooldownAfterClose;
         }
+
     }
 }

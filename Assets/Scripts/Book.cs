@@ -33,16 +33,20 @@ public class Book : MonoBehaviour
     [SerializeField]
     private Color[] extraGlitchColors = new Color[]
     {
-        new Color(0.95f, 0.80f, 0.20f), 
-        new Color(0.70f, 0.25f, 0.85f), 
+        new Color(0.95f, 0.80f, 0.20f),
+        new Color(0.70f, 0.25f, 0.85f),
         new Color(0.95f, 0.45f, 0.15f),
-        new Color(0.20f, 0.80f, 0.80f)  
+        new Color(0.20f, 0.80f, 0.80f)
     };
 
     [Header("State (read-only)")]
     [SerializeField] private bool isHeld;
     [SerializeField] private bool isShelved;
 
+    [Tooltip("Plain white material (same shader, same UVs) shown while the book is held and during the flicker")]
+    [SerializeField] private Material heldMaterial;
+
+    private Material originalMaterial;
     public bool IsHeld => isHeld;
     public bool IsShelved => isShelved;
 
@@ -72,12 +76,6 @@ public class Book : MonoBehaviour
         // Automatically find renderer if not assigned
         if (bookRenderer == null) bookRenderer = GetComponentInChildren<Renderer>();
         if (block == null) block = new MaterialPropertyBlock();
-
-        // Updates the color in the Scene View instantly when changed in Inspector
-        if (!Application.isPlaying || (!isHeld && onTable))
-        {
-            ApplyColor(RealColor);
-        }
     }
 
     private void Awake()
@@ -92,7 +90,8 @@ public class Book : MonoBehaviour
         if (bookRenderer == null) bookRenderer = GetComponentInChildren<Renderer>();
         if (block == null) block = new MaterialPropertyBlock();
 
-        ApplyColor(RealColor);
+        if (bookRenderer != null) originalMaterial = bookRenderer.sharedMaterial;
+        ShowReal();
     }
 
     private void OnEnable()
@@ -147,6 +146,21 @@ public class Book : MonoBehaviour
         bookRenderer.SetPropertyBlock(block);
     }
 
+    // Table / shelf: the material exactly as authored, no tint
+    private void ShowReal()
+    {
+        if (bookRenderer == null) return;
+        bookRenderer.SetPropertyBlock(null);
+        if (originalMaterial != null) bookRenderer.sharedMaterial = originalMaterial;
+    }
+
+    // Held: full white, no cover color
+    private void ShowHeld()
+    {
+        if (bookRenderer == null) return;
+        bookRenderer.SetPropertyBlock(null);
+        if (heldMaterial != null) bookRenderer.sharedMaterial = heldMaterial;
+    }
     private List<Color> GetFullFlickerPalette()
     {
         List<Color> palette = new List<Color>
@@ -180,7 +194,7 @@ public class Book : MonoBehaviour
         else if (flickerOnGrab)
             flickerRoutine = StartCoroutine(FlickerThroughAllColors());
         else
-            ApplyColor(heldColor);
+            ShowHeld(); 
 
         Grabbed?.Invoke(this);
     }
@@ -218,7 +232,7 @@ public class Book : MonoBehaviour
             transform.SetPositionAndRotation(snapPoint.position, snapPoint.rotation);
         }
 
-        ApplyColor(RealColor);
+        ShowReal();
         Shelved?.Invoke(this);
     }
 
@@ -230,7 +244,7 @@ public class Book : MonoBehaviour
         if (other.CompareTag("Table"))
         {
             onTable = true;
-            if (!isHeld && !isShelved) ApplyColor(RealColor);
+            if (!isHeld && !isShelved) ShowReal();
         }
     }
 
@@ -243,6 +257,7 @@ public class Book : MonoBehaviour
 
     private IEnumerator FlickerThroughAllColors()
     {
+        ShowHeld(); // switch to the white material first, then tint it
         float t = 0f;
         List<Color> palette = GetFullFlickerPalette();
         Color lastColor = RealColor;
@@ -266,8 +281,7 @@ public class Book : MonoBehaviour
             t += flickerInterval;
         }
 
-        // Koñczymy na docelowym kolorze (np. bia³ym)
-        ApplyColor(heldColor);
+        ShowHeld();
         flickerRoutine = null;
     }
 
