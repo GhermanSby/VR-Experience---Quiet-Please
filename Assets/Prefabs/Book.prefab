@@ -114,8 +114,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.025813531, y: 0.10113621, z: 0.09596052}
-  m_Center: {x: 0.00074795773, y: 0.04557006, z: -0.0012125708}
+  m_Size: {x: 0.051627062, y: 0.20227242, z: 0.19192104}
+  m_Center: {x: 0.0014959155, y: 0.09114012, z: -0.0024251416}
 --- !u!54 &5730193771475626609
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -187,10 +187,10 @@ MonoBehaviour:
   flickerOnGrab: 1
   flickerDuration: 0.6
   flickerInterval: 0.08
-  flickerMaterials:
-  - {fileID: 0}
+  extraGlitchColors: []
   isHeld: 0
   isShelved: 0
+  heldMaterial: {fileID: 2100000, guid: ecf2345b8d889a14b9052b5e58713a9c, type: 2}
 --- !u!1 &7834728554127330795
 GameObject:
   m_ObjectHideFlags: 0
