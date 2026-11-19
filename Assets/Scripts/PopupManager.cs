@@ -33,6 +33,7 @@ public class PopupManager : MonoBehaviour
     private readonly List<PopupCard> activePopups = new List<PopupCard>();
 
     public bool HasActivePopups => activePopups.Count > 0;
+    public int ActiveCount => activePopups.Count;
 
     public bool CanSpawn => activePopups.Count < maxOpenPopups && Time.time >= nextAllowedTime;
 

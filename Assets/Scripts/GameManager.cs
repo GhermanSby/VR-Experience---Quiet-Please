@@ -1,9 +1,12 @@
-// GameManager.cs  -  runs the experience: VS1 then VS2 in the SAME scene,
-// tracks task progress (books shelved), attention (focused / drifting) and pop-up pauses,
-// and tells every VS-aware object which profile is active.
+// GameManager.cs  -  the administrator of the experience.
+// It decides WHICH virtual subjectiveness is active and runs the flow (VS1, then VS2, in the SAME scene).
+// It also keeps the things every system shares: run time, attention (focused / drifting) and pop-up pauses.
+//
+// It does NOT know about books or shelves. The task belongs to TaskManager, which listens to
+// VSChanged, picks its VS1 or VS2 implementation, and reports back with
+// MarkTaskActivity() and NotifyTaskCompleted().
 
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace QuietPlease
@@ -27,21 +30,15 @@ namespace QuietPlease
         public VSProfile Current { get; private set; }
         public Phase Phase { get; private set; } = Phase.Intro;
         public Attention Attention { get; private set; } = Attention.Focused;
-        public int BooksShelved { get; private set; }
-        public int BooksTotal => books.Count;
         public bool PausedByPopUp => openPopUps > 0;
         public float RunTime { get; private set; }
 
         // Events other scripts listen to
         public event Action<VSProfile> VSChanged;
-        public event Action<int, int> ProgressChanged;     // shelved, total
         public event Action<Attention> AttentionChanged;
         public event Action Fidgeted;
-        public event Action<Book> BookPickedUp;
-        public event Action<Book> BookReleased;
         public event Action<VSProfile, float> RunFinished; // profile, seconds
 
-        readonly List<Book> books = new List<Book>();
         float lastTaskActivity;
         int openPopUps;
 
@@ -66,17 +63,22 @@ namespace QuietPlease
 
         // ---- flow ----------------------------------------------------------------
 
+        // Also the entry point for a menu: call StartVS(vs1) or StartVS(vs2) to switch.
         public void StartVS(VSProfile profile)
         {
+            if (profile == null)
+            {
+                Debug.LogError("[GameManager] No VS Profile assigned. Create one (Create > Quiet Please > VS Profile) and drag it into vs1 / vs2.");
+                return;
+            }
+
             Current = profile;
-            BooksShelved = 0; RunTime = 0f; openPopUps = 0;
-            foreach (var b in books) b.ResetToStart();
+            RunTime = 0f; openPopUps = 0;
             if (playerRig && playerStart) playerRig.SetPositionAndRotation(playerStart.position, playerStart.rotation);
             lastTaskActivity = Time.time;
             SetAttention(Attention.Focused);
             Phase = Phase.Playing;
-            VSChanged?.Invoke(Current);
-            ProgressChanged?.Invoke(BooksShelved, BooksTotal);
+            VSChanged?.Invoke(Current);   // TaskManager and every VSBehaviour react to this
             Debug.Log($"[GameManager] Started {Current.displayName}");
         }
 
@@ -90,28 +92,19 @@ namespace QuietPlease
         // Call this from a "Continue" button or after a short pause between the runs
         public void StartNextVS() { if (Phase == Phase.Between) StartVS(vs2); }
 
-        // ---- registration & task -------------------------------------------------
+        // ---- reports from the task -------------------------------------------------
 
-        public void Register(Book b) { if (!books.Contains(b)) books.Add(b); }
-
-        public void NotifyBookPickedUp(Book b) { MarkTaskActivity(); BookPickedUp?.Invoke(b); }
-        public void NotifyBookReleased(Book b) { BookReleased?.Invoke(b); }
-
-        public void NotifyBookShelved(Book b)
-        {
-            BooksShelved++;
-            MarkTaskActivity();
-            ProgressChanged?.Invoke(BooksShelved, BooksTotal);
-            if (BooksShelved >= BooksTotal) FinishRun();
-        }
-
+        // TaskManager calls this whenever the player works on the task (grabs or shelves a book)
         public void MarkTaskActivity() => lastTaskActivity = Time.time;
+
+        // TaskManager calls this when the last book is on its shelf
+        public void NotifyTaskCompleted() { if (Phase == Phase.Playing) FinishRun(); }
 
         // ---- attention, fidget, pop-ups -------------------------------------------
 
         public void NotifyFidget()
         {
-            if (!Current.fidgetRestoresTime) return;
+            if (Current == null || !Current.fidgetRestoresTime) return;
             MarkTaskActivity();
             Fidgeted?.Invoke();
         }

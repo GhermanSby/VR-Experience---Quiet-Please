@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07a380fb865d7447bc06d43d8c77e0d, type: 3}
+  m_Name: VS1_ADHD
+  m_EditorClassIdentifier:
+  type: 0
+  displayName: "VS1 \xB7 Managing"
+  ambientVolume: 1
+  volumeDrift: 1
+  driftAmount: 0.6
+  driftSpeed: 0.15
+  extraSources: 1
+  duckOnBookPickup: 0
+  handOvershoot: 1
+  handStiffness: 60
+  handDamping: 0.35
+  grabAnything: 1
+  racingClock: 1
+  driftTimeScale: 4
+  idleSecondsBeforeDrift: 6
+  fidgetRestoresTime: 1
+  popUps: 1
+  popUpInterval: {x: 15, y: 30}
+  maxPopUps: 2
+  highlightMatchingShelf: 0
