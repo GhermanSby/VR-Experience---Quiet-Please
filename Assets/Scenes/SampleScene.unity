@@ -2386,6 +2386,67 @@ Transform:
   - {fileID: 1835102300}
   m_Father: {fileID: 397896501}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &350224548
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 121558876823960712, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.01462963
+      objectReference: {fileID: 0}
+    - target: {fileID: 121558876823960712, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.7611221
+      objectReference: {fileID: 0}
+    - target: {fileID: 121558876823960712, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.17307371
+      objectReference: {fileID: 0}
+    - target: {fileID: 121558876823960712, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 121558876823960712, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 121558876823960712, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 121558876823960712, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 121558876823960712, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 121558876823960712, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 121558876823960712, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 535861671492636079, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
+      propertyPath: m_Name
+      value: FidgetToy
+      objectReference: {fileID: 0}
+    - target: {fileID: 1173115920722902168, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
+      propertyPath: m_IsKinematic
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: cef5c9768a054654a9e866e7bd1aba97, type: 3}
 --- !u!1 &352998368
 GameObject:
   m_ObjectHideFlags: 0
@@ -3163,15 +3224,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2514781073466284366, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.0551
+      value: 0.055
       objectReference: {fileID: 0}
     - target: {fileID: 2514781073466284366, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.43
+      value: 0.435
       objectReference: {fileID: 0}
     - target: {fileID: 2514781073466284366, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.0096
+      value: -0.022
       objectReference: {fileID: 0}
     - target: {fileID: 2514781073466284366, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalRotation.x
@@ -3191,11 +3252,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7300493363980487964, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.31
+      value: 0.57
       objectReference: {fileID: 0}
     - target: {fileID: 7300493363980487964, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.849
+      value: -0.21
       objectReference: {fileID: 0}
     - target: {fileID: 8273441060692451529, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4089,11 +4150,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7300493363980487964, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5
+      value: 0.12
       objectReference: {fileID: 0}
     - target: {fileID: 7300493363980487964, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.11
+      value: 0.19
       objectReference: {fileID: 0}
     - target: {fileID: 8273441060692451529, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalPosition.x
@@ -8301,6 +8362,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &1090419512 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5203984694136152709, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+  m_PrefabInstance: {fileID: 1379168398}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88dc16d5abc9b244699d5c7dc38f98ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WatchWristMenu
 --- !u!1 &1094890626
 GameObject:
   m_ObjectHideFlags: 0
@@ -10743,6 +10815,139 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1509892127}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1379168398
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2530670793248349017, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2744532321733305213, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_Name
+      value: Watch
+      objectReference: {fileID: 0}
+    - target: {fileID: 3268866994711935431, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.2966603
+      objectReference: {fileID: 0}
+    - target: {fileID: 3268866994711935431, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.00000003684451
+      objectReference: {fileID: 0}
+    - target: {fileID: 3268866994711935431, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.4784635
+      objectReference: {fileID: 0}
+    - target: {fileID: 3268866994711935431, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3268866994711935431, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3268866994711935431, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3268866994711935431, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3268866994711935431, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3268866994711935431, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3268866994711935431, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203984694136152709, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: buttons.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203984694136152709, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: buttons.Array.data[0].icon
+      value: 
+      objectReference: {fileID: 21300000, guid: 490272c7e5fa30f4a88f5f77ac90ca97, type: 3}
+    - target: {fileID: 5203984694136152709, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: buttons.Array.data[1].icon
+      value: 
+      objectReference: {fileID: 21300000, guid: ae2fef5f6398dd24caa6e6bb247b3d5c, type: 3}
+    - target: {fileID: 5203984694136152709, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: buttons.Array.data[2].icon
+      value: 
+      objectReference: {fileID: 21300000, guid: e5ee4a07cac68e74bada782abd493c0a, type: 3}
+    - target: {fileID: 5203984694136152709, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: buttons.Array.data[0].action
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203984694136152709, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: buttons.Array.data[1].action
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5203984694136152709, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: buttons.Array.data[0].profile
+      value: 
+      objectReference: {fileID: 11400000, guid: ee79b16b92cf698409687021ca5abf66, type: 2}
+    - target: {fileID: 5203984694136152709, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: buttons.Array.data[1].profile
+      value: 
+      objectReference: {fileID: 11400000, guid: e9a5b03ddede97b4d8216b7215e66e56, type: 2}
+    - target: {fileID: 5480596519487723959, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6268691937079200290, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1720469068}
+    - targetCorrespondingSourceObject: {fileID: 6268691937079200290, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1720469067}
+    - targetCorrespondingSourceObject: {fileID: 6268691937079200290, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1720469066}
+    - targetCorrespondingSourceObject: {fileID: 6268691937079200290, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1720469065}
+    - targetCorrespondingSourceObject: {fileID: 8872231602195413596, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1713350491}
+    - targetCorrespondingSourceObject: {fileID: 8872231602195413596, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1713350490}
+    - targetCorrespondingSourceObject: {fileID: 8872231602195413596, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1713350489}
+    - targetCorrespondingSourceObject: {fileID: 8872231602195413596, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1713350488}
+    - targetCorrespondingSourceObject: {fileID: 1364919135445361425, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1940523365}
+    - targetCorrespondingSourceObject: {fileID: 1364919135445361425, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1940523364}
+    - targetCorrespondingSourceObject: {fileID: 1364919135445361425, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1940523363}
+    - targetCorrespondingSourceObject: {fileID: 1364919135445361425, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1940523362}
+  m_SourcePrefab: {fileID: 100100000, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
 --- !u!1 &1379791746
 GameObject:
   m_ObjectHideFlags: 0
@@ -12951,6 +13156,69 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1776948861}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1634092380
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1634092383}
+  - component: {fileID: 1634092382}
+  - component: {fileID: 1634092381}
+  m_Layer: 0
+  m_Name: Pointable Canvas Module
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1634092381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634092380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2518c50cb3fc6a6458d4b743c2f69c7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.PointableCanvasModule
+  m_SendPointerHoverToParent: 1
+  _useInitialPressPositionForDrag: 1
+  _exclusiveMode: 1
+--- !u!114 &1634092382
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634092380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.EventSystems.EventSystem
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
+--- !u!4 &1634092383
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1634092380}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1635246635
 GameObject:
   m_ObjectHideFlags: 0
@@ -13371,6 +13639,224 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1164548921}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1713350484 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8872231602195413596, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+  m_PrefabInstance: {fileID: 1379168398}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1713350488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713350484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1464721f2283eb14e94a33e812b47be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.InteractableUnityEventWrapper
+  _interactableView: {fileID: 1713350489}
+  _whenHover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1090419512}
+        m_TargetAssemblyTypeName: WatchWristMenu, Assembly-CSharp
+        m_MethodName: PressButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 1
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _whenUnselect:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenInteractorViewAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenInteractorViewRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelectingInteractorViewAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelectingInteractorViewRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1713350489
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713350484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb86ba9d4c5126e48bfef9b0c9550e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.RayInteractable
+  _interactorFilters: []
+  _maxInteractors: -1
+  _maxSelectingInteractors: -1
+  _data: {fileID: 0}
+  _pointableElement: {fileID: 0}
+  _surface: {fileID: 1713350490}
+  _selectSurface: {fileID: 0}
+  _movementProvider: {fileID: 0}
+  _tiebreakerScore: 0
+--- !u!114 &1713350490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713350484}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2140d2b457bea84881488302059889b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.Surfaces.ColliderSurface
+  _collider: {fileID: 1713350491}
+--- !u!65 &1713350491
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713350484}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.100000046, y: 0.10000003, z: 0.012000031}
+  m_Center: {x: -0.05, y: 0.05, z: 0.0059999865}
+--- !u!1 &1720469061 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6268691937079200290, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+  m_PrefabInstance: {fileID: 1379168398}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1720469065
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720469061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1464721f2283eb14e94a33e812b47be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.InteractableUnityEventWrapper
+  _interactableView: {fileID: 1720469066}
+  _whenHover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1090419512}
+        m_TargetAssemblyTypeName: WatchWristMenu, Assembly-CSharp
+        m_MethodName: PressButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _whenUnselect:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenInteractorViewAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenInteractorViewRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelectingInteractorViewAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelectingInteractorViewRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1720469066
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720469061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb86ba9d4c5126e48bfef9b0c9550e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.RayInteractable
+  _interactorFilters: []
+  _maxInteractors: -1
+  _maxSelectingInteractors: -1
+  _data: {fileID: 0}
+  _pointableElement: {fileID: 0}
+  _surface: {fileID: 1720469067}
+  _selectSurface: {fileID: 1720469067}
+  _movementProvider: {fileID: 0}
+  _tiebreakerScore: 0
+--- !u!114 &1720469067
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720469061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2140d2b457bea84881488302059889b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.Surfaces.ColliderSurface
+  _collider: {fileID: 1720469068}
+--- !u!65 &1720469068
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1720469061}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.10000002, y: 0.100000024, z: 0.012000014}
+  m_Center: {x: -0.050000113, y: 0.050000124, z: 0.005999995}
 --- !u!1 &1726620846
 GameObject:
   m_ObjectHideFlags: 0
@@ -14856,6 +15342,115 @@ Transform:
   m_Children: []
   m_Father: {fileID: 15662890}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1940523358 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1364919135445361425, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
+  m_PrefabInstance: {fileID: 1379168398}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1940523362
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940523358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1464721f2283eb14e94a33e812b47be4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.InteractableUnityEventWrapper
+  _interactableView: {fileID: 1940523363}
+  _whenHover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenUnhover:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelect:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1090419512}
+        m_TargetAssemblyTypeName: WatchWristMenu, Assembly-CSharp
+        m_MethodName: PressButton
+        m_Mode: 3
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 2
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _whenUnselect:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenInteractorViewAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenInteractorViewRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelectingInteractorViewAdded:
+    m_PersistentCalls:
+      m_Calls: []
+  _whenSelectingInteractorViewRemoved:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1940523363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940523358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb86ba9d4c5126e48bfef9b0c9550e9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.RayInteractable
+  _interactorFilters: []
+  _maxInteractors: -1
+  _maxSelectingInteractors: -1
+  _data: {fileID: 0}
+  _pointableElement: {fileID: 0}
+  _surface: {fileID: 1940523364}
+  _selectSurface: {fileID: 1940523364}
+  _movementProvider: {fileID: 0}
+  _tiebreakerScore: 0
+--- !u!114 &1940523364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940523358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a2140d2b457bea84881488302059889b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Oculus.Interaction::Oculus.Interaction.Surfaces.ColliderSurface
+  _collider: {fileID: 1940523365}
+--- !u!65 &1940523365
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940523358}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.100000046, y: 0.10000003, z: 0.012000031}
+  m_Center: {x: -0.049999896, y: 0.049999896, z: 0.005999995}
 --- !u!1001 &1954989935
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15292,11 +15887,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7300493363980487964, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.69
+      value: 1.61
       objectReference: {fileID: 0}
     - target: {fileID: 7300493363980487964, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.463
+      value: -0.14
       objectReference: {fileID: 0}
     - target: {fileID: 8273441060692451529, guid: a08d490976f5b9d4197ed8235f1c6a20, type: 3}
       propertyPath: m_LocalPosition.x
@@ -16678,3 +17273,7 @@ SceneRoots:
   - {fileID: 6178946422019967134}
   - {fileID: 713869646}
   - {fileID: 800071327}
+  - {fileID: 465481306}
+  - {fileID: 350224548}
+  - {fileID: 1379168398}
+  - {fileID: 1634092383}

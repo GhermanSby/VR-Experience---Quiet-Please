@@ -190,7 +190,7 @@ public class Book : MonoBehaviour
         StopFlicker();
 
         if (keepColorWhenHeld)
-            ApplyColor(RealColor);
+            ShowReal();                                   // VS2: keep the authored material
         else if (flickerOnGrab)
             flickerRoutine = StartCoroutine(FlickerThroughAllColors());
         else
@@ -204,8 +204,7 @@ public class Book : MonoBehaviour
         isHeld = false;
         StopFlicker();
 
-        ApplyColor(onTable || keepColorWhenHeld ? RealColor : heldColor);
-
+        if (onTable || keepColorWhenHeld) ShowReal(); else ShowHeld();
         Released?.Invoke(this);
     }
 
@@ -317,6 +316,6 @@ public class Book : MonoBehaviour
             body.angularVelocity = Vector3.zero;
         }
 
-        ApplyColor(RealColor);
+        ShowReal();
     }
 }

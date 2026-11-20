@@ -38,6 +38,9 @@ namespace QuietPlease
         public event Action<Attention> AttentionChanged;
         public event Action Fidgeted;
         public event Action<VSProfile, float> RunFinished; // profile, seconds
+        public event Action<Book> BookPickedUp;
+        public event Action<Book> BookReleased;
+
 
         float lastTaskActivity;
         int openPopUps;
