@@ -1,16 +1,33 @@
 // TaskModeVS1.cs  -  the book task from the ADHD perspective.
 //   - a grabbed book flickers through colours and then turns white, so you have to remember its colour
-//   - shelving a book can interrupt you with a pop-up; the run timer pauses until you close it
+//   - TRYING to shelve a book can be interrupted by a pop-up, right before it would land on the shelf:
+//     the book is NOT shelved, the run timer pauses, and no shelf accepts a book until the pop-up is
+//     closed. Then the player tries again. Each book can be interrupted at most once; the chance per
+//     book is VSProfile.shelveInterruptChance.
+
+using System.Collections.Generic;
+using UnityEngine;
 
 namespace QuietPlease
 {
     public class TaskModeVS1 : TaskMode
     {
+        // Title and message of the interrupting pop-ups (examples from the design). Add more freely.
+        static readonly (string title, string message)[] Interruptions =
+        {
+            ("hungry_dinner.exe", "What should I eat for dinner today?"),
+            ("Reminder", "Wait... what was the task again?"),
+        };
+
+        // Books that already had their one chance of being interrupted in this run
+        readonly HashSet<Book> alreadyRolled = new HashSet<Book>();
+
         bool PopUpsEnabled => Profile == null || Profile.popUps;
-        int MaxPopUps => Profile != null ? Profile.maxPopUps : 2;
+        float InterruptChance => Profile != null ? Profile.shelveInterruptChance : 0.5f;
 
         protected override void OnBegin()
         {
+            alreadyRolled.Clear();
             foreach (Book book in Task.Books)
             {
                 book.keepColorWhenHeld = false;
@@ -18,20 +35,18 @@ namespace QuietPlease
             }
         }
 
-        public override void OnBookPlaced(Book book, Shelf shelf)
+        public override bool OnShelveAttempt(Book book, Shelf shelf)
         {
-            if (!PopUpsEnabled) return;
-            if (Task.BooksPlaced >= Task.BooksTotal) return;   // no interruption after the last book
+            if (!PopUpsEnabled) return true;
+            if (!alreadyRolled.Add(book)) return true;   // this book already had its chance
+            if (InterruptChance <= 0f || Random.value > InterruptChance) return true;
 
             PopupManager popups = PopupManager.Instance;
-            if (popups == null || popups.ActiveCount >= MaxPopUps) return;
+            if (popups == null) return true;
 
-            // The GameManager is captured now, so the pause is always released on the same one.
-            GameManager gm = GM;
-            PopupCard card = popups.SpawnInFrontOfPlayer(
-                "Warning", "Task interrupted! Close this to continue.",
-                () => { if (gm != null) gm.PopUpClosed(); });
-            if (card != null && gm != null) gm.PopUpOpened();
+            var (title, message) = Interruptions[Random.Range(0, Interruptions.Length)];
+            PopupCard card = popups.SpawnInFrontOfPlayer(title, message);
+            return card == null;   // no pop-up could appear (limit or cooldown): shelve normally
         }
     }
 }

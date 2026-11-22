@@ -23,6 +23,11 @@ public class TouchCloseButton : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (wasPressed) return;
+
+        // Pop-ups appear right where the player holds a book (in front of the shelf).
+        // Only the hand may close one, never a book passing through the button.
+        if (other.GetComponentInParent<Book>() != null) return;
+
         wasPressed = true;
 
         if (buttonRenderer != null)

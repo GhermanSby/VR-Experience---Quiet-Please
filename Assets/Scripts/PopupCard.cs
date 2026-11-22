@@ -30,12 +30,19 @@ public class PopupCard : MonoBehaviour
     /// <summary>
     /// Self-destruct function called by the touch button.
     /// </summary>
-    public void Close()
+    public void Close() => CloseInternal(true);
+
+    /// <summary>
+    /// Removes the popup without the close sound (used when the VS is switched).
+    /// </summary>
+    public void Dismiss() => CloseInternal(false);
+
+    private void CloseInternal(bool playSound)
     {
         if (isClosing) return;
         isClosing = true;
 
-        if (closeSound != null)
+        if (playSound && closeSound != null)
         {
             // Plays sound at point so it finishes even though the object is destroyed
             AudioSource.PlayClipAtPoint(closeSound, transform.position);

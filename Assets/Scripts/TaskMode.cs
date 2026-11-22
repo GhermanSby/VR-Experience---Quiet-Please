@@ -27,6 +27,10 @@ namespace QuietPlease
         protected virtual void OnBegin() { }
         protected virtual void OnEnd() { }
 
+        // A book reached the shelf it belongs on and is about to be shelved.
+        // Return false to stop it (the book stays in the hand and the player has to try again).
+        public virtual bool OnShelveAttempt(Book book, Shelf shelf) => true;
+
         public virtual void OnBookGrabbed(Book book) { }
         public virtual void OnBookReleased(Book book) { }
         public virtual void OnBookPlaced(Book book, Shelf shelf) { }

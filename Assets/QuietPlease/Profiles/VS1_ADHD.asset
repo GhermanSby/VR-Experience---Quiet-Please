@@ -31,4 +31,5 @@ MonoBehaviour:
   popUps: 1
   popUpInterval: {x: 15, y: 30}
   maxPopUps: 2
+  shelveInterruptChance: 0.5
   highlightMatchingShelf: 0

@@ -132,7 +132,7 @@ public class TaskManager : MonoBehaviour
     {
         switch (type)
         {
-            case VSType.VS2_Typical: return new TaskModeVS2();
+            case VSType.VS2_Trying: return new TaskModeVS2();
             default: return new TaskModeVS1();
         }
     }
@@ -194,6 +194,21 @@ public class TaskManager : MonoBehaviour
     {
         mode?.OnBookReleased(book);
         BookReleased?.Invoke(book);
+    }
+
+    /// <summary>
+    /// Called by Shelf when a book reaches the shelf it belongs on, BEFORE it is accepted.
+    /// Returns false when the attempt is blocked: a pop-up is open (the task is paused until it is
+    /// closed), or the active VS interrupts this attempt (VS1 can open a pop-up right now).
+    /// </summary>
+    public bool CanShelve(Book book, Shelf shelf)
+    {
+        GameManager.Instance?.MarkTaskActivity();   // trying counts as working on the task
+
+        if (PopupManager.Instance != null && PopupManager.Instance.HasActivePopups)
+            return false;
+
+        return mode == null || mode.OnShelveAttempt(book, shelf);
     }
 
     // Called by Shelf

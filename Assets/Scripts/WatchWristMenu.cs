@@ -26,12 +26,15 @@ public sealed class WatchWristMenu : MonoBehaviour
 
         [NonSerialized] public GameObject ButtonObject;
         [NonSerialized] public Collider TouchCollider;
+        [NonSerialized] public Image IconImage;            // set by ApplyIcon, used to dim inactive VS buttons
+        [NonSerialized] public SpriteRenderer IconSprite;
         [SerializeField] private Vector3 controllerTipOffset = new Vector3(0f, -0.01f, 0.05f); // tune in Inspector
 
 
         public WatchButtonAction(string name) => buttonName = name;
         public string ButtonName => buttonName;
         public Sprite Icon => icon;
+        public VSProfile Profile => action == ActionMode.StartProfile ? profile : null;
 
         public void Execute(WatchWristMenu context)
         {
@@ -101,6 +104,13 @@ public sealed class WatchWristMenu : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float touchHapticAmplitude = 0.3f;
     [SerializeField, Min(0f)] private float touchHapticDuration = 0.05f;
 
+    [Header("Switching")]
+    [Tooltip("Seconds after a press during which further presses are ignored, so one poke " +
+             "(or a jittery finger re-entering the button) cannot restart the run twice.")]
+    [SerializeField, Min(0f)] private float pressCooldown = 0.75f;
+    [Tooltip("Tint of the icons of the VS buttons that are NOT the active VS.")]
+    [SerializeField] private Color inactiveVSIconTint = new Color(1f, 1f, 1f, 0.35f);
+
     [Header("Center playing time")]
     [SerializeField] private string centerPanelName = "center";
     [SerializeField] private Color playingTimeColor = new Color(0.12f, 0.62f, 1f, 1f);
@@ -127,6 +137,9 @@ public sealed class WatchWristMenu : MonoBehaviour
     private Vector3 wristSurfaceNormal = Vector3.up;
     private TMP_Text playingTimeText;
     private int lastDisplayedSecond = -1;
+    private VSProfile lastDisplayedProfile;
+    private bool profileDisplayInitialized;
+    private float nextPressAllowedAt;
     private static MethodInfo tryGetControllerHandMethod;
     private static PropertyInfo rightIndexTipProperty;
     private static bool controllerGloveApiResolved;
@@ -150,6 +163,7 @@ public sealed class WatchWristMenu : MonoBehaviour
 
     private void Update()
     {
+        UpdateActiveVS();
         UpdatePlayingTime();
 
         if (hmdCamera == null || cameraRig == null)
@@ -441,18 +455,31 @@ public sealed class WatchWristMenu : MonoBehaviour
 
             Button uiButton = buttonTransform.GetComponent<Button>();
             if (uiButton != null)
-                uiButton.onClick.AddListener(() => entry.Execute(this));
+                uiButton.onClick.AddListener(() => Run(entry));
 
-            // Non-UI buttons are pressed through ProcessRightGloveFingertipTouch().
+            // Non-UI buttons are pressed through PressButton() (Meta poke events in the scene)
+            // or ProcessRightGloveFingertipTouch() (only when ControllerGloveVisualizer exists).
         }
     }
 
+    // Called by the poke InteractableUnityEventWrappers on the watch buttons.
     public void PressButton(int index)
     {
         if (!visible || index < 0 || index >= buttons.Length || buttons[index] == null)
             return;
-        buttons[index].Execute(this);
+        Run(buttons[index]);
+    }
 
+    // The single gateway for every press path, so the cooldown covers all of them.
+    private void Run(WatchButtonAction entry)
+    {
+        if (Time.unscaledTime < nextPressAllowedAt)
+        {
+            Debug.Log($"[Watch] Ignored {entry.ButtonName}: pressed again within {pressCooldown:0.##} s.", this);
+            return;
+        }
+        nextPressAllowedAt = Time.unscaledTime + pressCooldown;
+        entry.Execute(this);
     }
     private void ProcessRightGloveFingertipTouch()
     {
@@ -520,7 +547,7 @@ public sealed class WatchWristMenu : MonoBehaviour
             fingertipTouchArmed = false;
             fingertipContacts.Add(entry);
             SendRightControllerTouchHaptic();
-            entry.Execute(this);
+            Run(entry);
             return;
         }
 
@@ -573,6 +600,7 @@ public sealed class WatchWristMenu : MonoBehaviour
         {
             image.sprite = entry.Icon;
             image.enabled = entry.Icon != null;
+            entry.IconImage = image;
             return;
         }
 
@@ -588,6 +616,7 @@ public sealed class WatchWristMenu : MonoBehaviour
 
         spriteRenderer.sprite = entry.Icon;
         spriteRenderer.enabled = entry.Icon != null;
+        entry.IconSprite = spriteRenderer;
         if (entry.Icon != null && hasButtonBounds)
             PlaceIconOnButtonSurface(spriteRenderer, buttonBounds);
     }
@@ -671,7 +700,7 @@ public sealed class WatchWristMenu : MonoBehaviour
         text.color = playingTimeColor;
         text.outlineColor = new Color(0.03f, 0.28f, 0.85f, 0.9f);
         text.outlineWidth = 0.16f;
-        //text.enableWordWrapping = false;
+        text.textWrappingMode = TextWrappingModes.NoWrap; // keep the VS name on one line
         text.rectTransform.sizeDelta = new Vector2(6f, 2.8f);
         text.transform.localScale = Vector3.one * playingTimeScale;
 
@@ -703,19 +732,52 @@ public sealed class WatchWristMenu : MonoBehaviour
         }
     }
 
+    // Shows the active VS and its run time. The run time comes from the GameManager, so it
+    // restarts on every switch, pauses while a pop-up is open and freezes when the task is done.
+    // Without a GameManager it falls back to the time since the app started.
     private void UpdatePlayingTime()
     {
         if (playingTimeText == null)
             return;
 
-        int totalSeconds = Mathf.Max(0, Mathf.FloorToInt(Time.realtimeSinceStartup));
+        GameManager gm = GameManager.Instance;
+        bool hasRun = gm != null && gm.Current != null;
+        float elapsed = hasRun ? gm.RunTime : Time.realtimeSinceStartup;
+
+        int totalSeconds = Mathf.Max(0, Mathf.FloorToInt(elapsed));
         if (totalSeconds == lastDisplayedSecond)
             return;
 
         lastDisplayedSecond = totalSeconds;
         int minutes = totalSeconds / 60;
         int seconds = totalSeconds % 60;
-        playingTimeText.text = $"<size=55%>PLAYING TIME</size>\n<size=100%>{minutes:00}:{seconds:00}</size>";
+        string label = hasRun && !string.IsNullOrEmpty(gm.Current.displayName)
+            ? gm.Current.displayName.ToUpperInvariant()
+            : "PLAYING TIME";
+        playingTimeText.text = $"<size=55%>{label}</size>\n<size=100%>{minutes:00}:{seconds:00}</size>";
+    }
+
+    // ---- Active VS --------------------------------------------------------------
+
+    // When the VS changes: dim the icons of the VS buttons that are not active and redraw the face.
+    private void UpdateActiveVS()
+    {
+        VSProfile current = GameManager.Instance != null ? GameManager.Instance.Current : null;
+        if (profileDisplayInitialized && current == lastDisplayedProfile)
+            return;
+
+        profileDisplayInitialized = true;
+        lastDisplayedProfile = current;
+        lastDisplayedSecond = -1; // forces UpdatePlayingTime to redraw with the new VS name
+
+        foreach (WatchButtonAction entry in buttons)
+        {
+            if (entry == null || entry.Profile == null)
+                continue;
+            Color tint = current == null || entry.Profile == current ? Color.white : inactiveVSIconTint;
+            if (entry.IconImage != null) entry.IconImage.color = tint;
+            if (entry.IconSprite != null) entry.IconSprite.color = tint;
+        }
     }
 
     // ---- Visibility -----------------------------------------------------------
