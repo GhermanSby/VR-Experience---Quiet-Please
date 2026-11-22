@@ -78,7 +78,7 @@ namespace QuietPlease
 
         void Update()
         {
-            // Check if we are in ADHD (VS1) or Typical (VS2)
+            // Check if we are in ADHD (VS1) or Trying (VS2)
             bool isADHD = true;
             float profileAmbient = 1f;
 

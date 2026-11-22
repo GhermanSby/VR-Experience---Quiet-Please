@@ -1,13 +1,13 @@
 // VSProfile.cs  -  one asset per virtual subjectiveness.
 // Create with: right-click in Project > Create > Quiet Please > VS Profile
-// Make two: "VS1_ADHD" and "VS2_Typical". Every VS-dependent value lives here,
+// Make two: "VS1_ADHD" and "VS2_Trying". Every VS-dependent value lives here,
 // so the scene stays the same and only the profile changes (same VE, different VS).
 
 using UnityEngine;
 
 namespace QuietPlease
 {
-    public enum VSType { VS1_ADHD, VS2_Typical }
+    public enum VSType { VS1_ADHD, VS2_Trying }
 
     [CreateAssetMenu(menuName = "Quiet Please/VS Profile", fileName = "VSProfile")]
     public class VSProfile : ScriptableObject
@@ -41,6 +41,9 @@ namespace QuietPlease
         public bool popUps = true;
         public Vector2 popUpInterval = new Vector2(15f, 30f); // seconds between pop-ups (min, max)
         public int maxPopUps = 2;
+        [Tooltip("Chance that trying to shelve a book is interrupted by a pop-up. Each book is rolled " +
+                 "once per run, on its first attempt at the right shelf. 1 = every book once (good for testing).")]
+        [Range(0f, 1f)] public float shelveInterruptChance = 0.5f;
 
         [Header("Guidance")]
         public bool highlightMatchingShelf = false;         // VS2: shelf lights up when you hold a book

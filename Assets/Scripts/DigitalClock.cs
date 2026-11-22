@@ -1,3 +1,4 @@
+using QuietPlease;
 using TMPro;
 using UnityEngine;
 
@@ -7,7 +8,10 @@ public enum ClockMode
     DriftUnlessFidgeting   // "crazy", but normal while fidgeting (VS1)
 }
 
-public class DigitalClock : MonoBehaviour
+// With a GameManager in the scene the mode follows the active VS Profile (racingClock),
+// and every VS switch restarts the clock at the start time, because a switch restarts the run.
+// Without a GameManager the Mode set in the Inspector is used.
+public class DigitalClock : VSBehaviour
 {
     [Header("References")]
     [SerializeField] private TMP_Text display;
@@ -51,10 +55,22 @@ public class DigitalClock : MonoBehaviour
     public ClockMode Mode => mode;
     public void SetMode(ClockMode newMode) => mode = newMode;
 
-    private void Start()
+    private void Start() => ResetTime();
+
+    protected override void ApplyProfile(VSProfile p)
+    {
+        mode = p.racingClock ? ClockMode.DriftUnlessFidgeting : ClockMode.AlwaysNormal;
+        ResetTime();
+    }
+
+    // Back to the start time at real speed, so VS2 does not inherit VS1's drifted time.
+    private void ResetTime()
     {
         realSeconds = shownSeconds = startHour * 3600f + startMinute * 60f;
+        currentSpeed = targetSpeed = 1f;
+        nextSpeedChangeTime = 0f;
         UpdateText(true);
+        UpdateColor();
     }
 
     private void Update()
@@ -93,11 +109,11 @@ public class DigitalClock : MonoBehaviour
 
         UpdateColor();
         UpdateText(false);
-        UpdateText(false);
     }
 
     private void UpdateText(bool force)
     {
+        if (display == null) return;
         int total = Mathf.FloorToInt(shownSeconds);
         if (!force && total == lastShownWholeSecond) return;
         lastShownWholeSecond = total;
@@ -112,6 +128,7 @@ public class DigitalClock : MonoBehaviour
 
     private void UpdateColor()
     {
+        if (display == null) return;
         Color target = normalColor;
 
         if (currentSpeed > 1f + normalTolerance)

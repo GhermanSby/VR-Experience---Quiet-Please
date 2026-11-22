@@ -298,6 +298,13 @@ public class Book : MonoBehaviour
     public void ResetToStart()
     {
         StopFlicker();
+
+        // A book still in the player's hand (e.g. while switching VS on the watch) would be pulled straight
+        // back into the hand and keep the Grabbable's kinematic lock. Disabling the Grabbable cancels the grab
+        // cleanly: it raises Cancel (which runs OnReleased) and unlocks the rigidbody. It is re-enabled below.
+        if (grabbable != null && grabbable.enabled && grabbable.SelectingPointsCount > 0)
+            grabbable.enabled = false;
+
         isHeld = false;
         isShelved = false;
         onTable = true;

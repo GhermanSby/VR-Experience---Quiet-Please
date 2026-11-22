@@ -131,6 +131,10 @@ public class Shelf : MonoBehaviour
 
             if (acceptedColors.Contains(book.bookColor))
             {
+                // Ask the task first: VS1 can interrupt the attempt with a pop-up, and while a pop-up is
+                // open nothing can be shelved. A blocked book stays in the hand; to try again the player
+                // takes it out of the shelf zone and puts it back in.
+                if (TaskManager.Instance != null && !TaskManager.Instance.CanShelve(book, this)) return;
                 AcceptBook(book);
             }
             else

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using QuietPlease;
 using UnityEngine;
 
 public class PopupManager : MonoBehaviour
@@ -35,7 +36,47 @@ public class PopupManager : MonoBehaviour
     public bool HasActivePopups => activePopups.Count > 0;
     public int ActiveCount => activePopups.Count;
 
-    public bool CanSpawn => activePopups.Count < maxOpenPopups && Time.time >= nextAllowedTime;
+    public bool CanSpawn => AllowedByVS && activePopups.Count < maxOpenPopups && Time.time >= nextAllowedTime;
+
+    // Pop-ups exist only in a VS whose profile has them (VS1). Without a GameManager they are always allowed.
+    private static bool AllowedByVS
+    {
+        get
+        {
+            GameManager gm = GameManager.Instance;
+            return gm == null || gm.Current == null || gm.Current.popUps;
+        }
+    }
+
+    private GameManager subscribedTo;
+
+    private void OnEnable()
+    {
+        subscribedTo = GameManager.Instance;
+        if (subscribedTo != null) subscribedTo.VSChanged += HandleVSChanged;
+    }
+
+    private void OnDisable()
+    {
+        if (subscribedTo != null) subscribedTo.VSChanged -= HandleVSChanged;
+        subscribedTo = null;
+    }
+
+    // A VS switch restarts the run, so nothing from the previous run may stay floating in the room.
+    private void HandleVSChanged(VSProfile profile) => CloseAll();
+
+    /// <summary>
+    /// Removes every open popup silently and clears the cooldown.
+    /// </summary>
+    public void CloseAll()
+    {
+        foreach (PopupCard card in activePopups.ToArray())
+        {
+            if (card != null) card.Dismiss();
+        }
+        activePopups.Clear();
+        nextAllowedTime = 0f;
+    }
 
     private void Awake()
     {
@@ -70,6 +111,8 @@ public class PopupManager : MonoBehaviour
         card.Initialize(title, message, onClosed);
 
         activePopups.Add(card);
+        // Every pop-up pauses the run timer until it is closed, whoever spawned it.
+        GameManager.Instance?.PopUpOpened();
         return card;
     }
 
@@ -119,6 +162,7 @@ public class PopupManager : MonoBehaviour
         if (activePopups.Remove(card))
         {
             nextAllowedTime = Time.time + cooldownAfterClose;
+            GameManager.Instance?.PopUpClosed();
         }
 
     }

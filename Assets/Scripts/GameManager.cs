@@ -66,7 +66,12 @@ namespace QuietPlease
 
         // ---- flow ----------------------------------------------------------------
 
-        // Also the entry point for a menu: call StartVS(vs1) or StartVS(vs2) to switch.
+        // Also the entry point for the wristwatch: call StartVS(vs1) or StartVS(vs2) to switch.
+        // A switch always RESTARTS the run in the chosen VS (also when it is the VS already active):
+        //   GameManager  - run time 0, pop-up pause cleared, attention focused
+        //   TaskManager  - books back on the table, shelves empty, VS1 or VS2 task mode
+        //   PopupManager - every open pop-up removed
+        //   DigitalClock - back to the start time, racing (VS1) or real time (VS2)
         public void StartVS(VSProfile profile)
         {
             if (profile == null)
@@ -112,6 +117,7 @@ namespace QuietPlease
             Fidgeted?.Invoke();
         }
 
+        // PopupManager reports every pop-up it opens and closes; the run timer stops while any is open.
         public void PopUpOpened() => openPopUps++;
         public void PopUpClosed() => openPopUps = Mathf.Max(0, openPopUps - 1);
 
