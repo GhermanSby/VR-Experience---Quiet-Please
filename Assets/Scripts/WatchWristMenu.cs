@@ -13,7 +13,8 @@ public sealed class WatchWristMenu : MonoBehaviour
     private enum ActionMode
     {
         StartProfile,
-        QuitApplication
+        QuitApplication,
+        RestartCurrentVS
     }
 
     [Serializable]
@@ -47,6 +48,18 @@ public sealed class WatchWristMenu : MonoBehaviour
 #else
                 Application.Quit();
 #endif
+                return;
+            }
+            if (action == ActionMode.RestartCurrentVS)
+            {
+                GameManager gm = GameManager.Instance;
+                if (gm == null || gm.Current == null)
+                {
+                    Debug.LogWarning("[Watch] No active VS to restart.", context);
+                    return;
+                }
+
+                gm.StartVS(gm.Current);
                 return;
             }
 
