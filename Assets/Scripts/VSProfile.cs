@@ -23,10 +23,15 @@ namespace QuietPlease
         public bool extraSources = true;                    // VS1-only sounds play
         public bool duckOnBookPickup = false;               // VS2: other sounds soften briefly when a book is picked up
 
-        [Header("Virtual hands (hand mapping)")]
+        [Header("Virtual hands (hand mapping)  -  run by GameManager's HandMapping")]
+        [Tooltip("On: the virtual hands follow the real ones through a spring (lag, then overshoot). Off: exactly 1:1.")]
         public bool handOvershoot = true;                   // overshoot + inertia
-        public float handStiffness = 60f;                   // spring stiffness (lower = more lag)
-        [Range(0f, 1f)] public float handDamping = 0.35f;   // < 1 overshoots; 1 = no overshoot
+        [Tooltip("Spring stiffness. Higher = the virtual hand catches up faster (less lag). " +
+                 "200 lags ~12 cm during a fast 40 cm reach and ~2 cm during a slow one.")]
+        public float handStiffness = 200f;                  // spring stiffness (lower = more lag)
+        [Tooltip("Damping ratio. Below 1 the hand overshoots (0.4 = ~5 cm after a fast reach, ~0.3 cm after a slow one); " +
+                 "1 = lags but never overshoots. Below ~0.3 it starts to wobble and reads as a tremor.")]
+        [Range(0f, 1f)] public float handDamping = 0.4f;    // < 1 overshoots; 1 = no overshoot
 
         [Header("Grab")]
         public bool grabAnything = true;                    // VS1: books, pen, ball. VS2: books only
