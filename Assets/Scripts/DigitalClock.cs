@@ -52,7 +52,10 @@ public class DigitalClock : VSBehaviour
     private float nextSpeedChangeTime;
     private int lastShownWholeSecond = -1;
 
+    
     public ClockMode Mode => mode;
+    public float CurrentSpeed => currentSpeed;
+    public bool IsFast => currentSpeed > 1f + normalTolerance;
     public void SetMode(ClockMode newMode) => mode = newMode;
 
     private void Start() => ResetTime();
