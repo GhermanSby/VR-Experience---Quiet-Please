@@ -1675,6 +1675,17 @@ Transform:
   - {fileID: 343963397}
   m_Father: {fileID: 290468130}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &275588768 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9121313819315259592, guid: bf2ffe48967608c4d88e48cc41cfd9cb, type: 3}
+  m_PrefabInstance: {fileID: 6178946422019967134}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 17e9955b1fdd7fd4bae3dbf25fa6d326, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DigitalClock
 --- !u!1 &276472971
 GameObject:
   m_ObjectHideFlags: 0
@@ -11335,9 +11346,6 @@ PrefabInstance:
       addedObject: {fileID: 1474842733}
     - targetCorrespondingSourceObject: {fileID: 5341755351040476378, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1474842731}
-    - targetCorrespondingSourceObject: {fileID: 5341755351040476378, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 1474842728}
   m_SourcePrefab: {fileID: 100100000, guid: 127c9e51e440bca4db11766ee86b1821, type: 3}
 --- !u!1 &1379791746
@@ -11638,6 +11646,7 @@ GameObject:
   - component: {fileID: 1424918319}
   - component: {fileID: 1424918321}
   - component: {fileID: 1424918320}
+  - component: {fileID: 1424918322}
   m_Layer: 0
   m_Name: CenterEyeAnchor
   m_TagString: MainCamera
@@ -11719,6 +11728,50 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1424918318}
   m_Enabled: 1
+--- !u!114 &1424918322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1424918318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_TaaSettings:
+    m_Quality: 3
+    m_FrameInfluence: 0.1
+    m_JitterScale: 1
+    m_MipBias: 0
+    m_VarianceClampScale: 0.9
+    m_ContrastAdaptiveSharpening: 0
+  m_Version: 2
 --- !u!1 &1428120022
 GameObject:
   m_ObjectHideFlags: 0
@@ -12359,18 +12412,6 @@ MonoBehaviour:
   _whenSelectingInteractorViewRemoved:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1474842731
-MonoBehaviour:
-  m_ObjectHideFlags: 2
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1474842724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c239b33ee5aee77488aadc51463c91de, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.XR.CompositionLayers::Unity.XR.CompositionLayers.CompositionOutline
 --- !u!114 &1474842733
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -16768,12 +16809,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 41c20d5c6f750eb46ada34a2d0923785, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::QuietPlease.RoomAudioController
-  masterVolume: 0.45
-  vs2QuietMultiplier: 0.4
+  digitalClock: {fileID: 275588768}
+  masterVolume: 0.25
+  vs2QuietMultiplier: 0.15
   clockNormal: {fileID: 1453053174}
   clockHorror: {fileID: 215121039}
   clockMaxVolume: 0.5
-  clockSwitchInterval: 12
   streetNormal: {fileID: 991522822}
   streetHorns: {fileID: 1291837298}
   streetMaxVolume: 0.4
@@ -16784,6 +16825,8 @@ MonoBehaviour:
   shoesMaxVolume: 0.9
   shoesInterval: 10
   crossfadeSpeed: 1.2
+  debugToggleKey: 118
+  isVS1: 1
 --- !u!4 &2036760059
 Transform:
   m_ObjectHideFlags: 0
