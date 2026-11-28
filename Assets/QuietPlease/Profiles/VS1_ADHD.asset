@@ -21,8 +21,8 @@ MonoBehaviour:
   extraSources: 1
   duckOnBookPickup: 0
   handOvershoot: 1
-  handStiffness: 60
-  handDamping: 0.35
+  handStiffness: 200
+  handDamping: 0.4
   grabAnything: 1
   racingClock: 1
   driftTimeScale: 4
